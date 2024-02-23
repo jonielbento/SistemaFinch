@@ -58,14 +58,14 @@
             // fornecedoresToolStripMenuItem
             // 
             fornecedoresToolStripMenuItem.Name = "fornecedoresToolStripMenuItem";
-            fornecedoresToolStripMenuItem.Size = new Size(180, 22);
+            fornecedoresToolStripMenuItem.Size = new Size(145, 22);
             fornecedoresToolStripMenuItem.Text = "Fornecedores";
             fornecedoresToolStripMenuItem.Click += fornecedoresToolStripMenuItem_Click;
             // 
             // produtosToolStripMenuItem
             // 
             produtosToolStripMenuItem.Name = "produtosToolStripMenuItem";
-            produtosToolStripMenuItem.Size = new Size(180, 22);
+            produtosToolStripMenuItem.Size = new Size(145, 22);
             produtosToolStripMenuItem.Text = "Produtos";
             produtosToolStripMenuItem.Click += produtosToolStripMenuItem_Click;
             // 
@@ -101,6 +101,7 @@
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "Menu";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Sistema";
             Load += Menu_Load;
             menuStrip1.ResumeLayout(false);

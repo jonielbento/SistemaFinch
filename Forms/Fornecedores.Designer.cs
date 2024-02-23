@@ -70,7 +70,7 @@
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(627, 335);
+            tabControl1.Size = new Size(630, 335);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -83,7 +83,7 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(619, 307);
+            tabPage1.Size = new Size(622, 307);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Consulta";
             tabPage1.UseVisualStyleBackColor = true;
@@ -379,6 +379,7 @@
             ClientSize = new Size(628, 332);
             Controls.Add(tabControl1);
             Name = "Fornecedores";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Fornecedores";
             Load += Fornecedores_Load;
             tabControl1.ResumeLayout(false);

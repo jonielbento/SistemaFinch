@@ -10,26 +10,26 @@ namespace SistemaFinch.Business
         private readonly SqlDataAccess _dataAccess = new(conn);
         private readonly ApiDataAccess _apiDataAccess = new();
 
-        public (bool, string?) GetUsuario(string usuario, string senha)
+        public Resultado GetUsuario(string usuario, string senha)
         {
-            if (string.IsNullOrWhiteSpace(usuario)) { return (false, null); }
-            if (string.IsNullOrWhiteSpace(senha)) { return (false, null); }
+            if (string.IsNullOrWhiteSpace(usuario)) { return new(false, null); }
+            if (string.IsNullOrWhiteSpace(senha)) { return new(false, null); }
             return _dataAccess.GetUsuario(usuario, senha);
 
         }
 
-        public List<FornecedorDb>? GetFornecedor(string nome = null)
+        public (Resultado, List<FornecedorDb>?) GetFornecedor(string nome = null)
         {
             var resultado = _dataAccess.GetFornecedor(nome);
             if (resultado.Success && !string.IsNullOrWhiteSpace(resultado.Message))
             {
                 return JsonSerializer.Deserialize<List<FornecedorDb>>(resultado.Message);
             }
-            return null;
+            return (null, null);
 
         }
 
-        public List<ProdutoDb>? GetProduto(string? nome = null)
+        public (Resultado, List<ProdutoDb>?) GetProduto(string? nome = null)
         {
             var resultado = _dataAccess.GetProduto(nome);
             if (resultado.Success && !string.IsNullOrWhiteSpace(resultado.Message))
@@ -64,7 +64,7 @@ namespace SistemaFinch.Business
             return new(true, "Operação executada com sucesso"); ;
         }
 
-        public bool PostProduto(int fornecedorId, string nome, string quantidade)
+        public Resultado PostProduto(int fornecedorId, string nome, string quantidade)
         {
             if (fornecedorId <= 0) { return false; }
             if (string.IsNullOrWhiteSpace(nome)) { return false; }
@@ -76,7 +76,7 @@ namespace SistemaFinch.Business
         }
 
 
-        public bool UpdateFornecedor(int id, string nome, string cep, string estado, string bairro, string cidade, string complemento, string numero, string rua, bool ativo)
+        public Resultado UpdateFornecedor(int id, string nome, string cep, string estado, string bairro, string cidade, string complemento, string numero, string rua, bool ativo)
         {
             if (id <= 0) { return false; }
             if (string.IsNullOrWhiteSpace(nome)) { return false; }
@@ -93,7 +93,7 @@ namespace SistemaFinch.Business
             return resultado;
         }
 
-        public bool UpdateProduto(int id, int fornecedorid, string nome, string quantidade)
+        public Resultado UpdateProduto(int id, int fornecedorid, string nome, string quantidade)
         {
             if (id <= 0) { return false; }
             if (fornecedorid <= 0) { return false; }
@@ -105,7 +105,7 @@ namespace SistemaFinch.Business
             return resultado;
         }
 
-        public bool DeleteFornecedor(string id)
+        public Resultado DeleteFornecedor(string id)
         {
             if (!int.TryParse(id, out int identify)) { return false; }
 
@@ -114,7 +114,7 @@ namespace SistemaFinch.Business
             return resultado;
         }
 
-        public bool DeleteProduto(string id)
+        public Resultado DeleteProduto(string id)
         {
             if (!string.IsNullOrWhiteSpace(id))
             {

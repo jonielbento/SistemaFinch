@@ -235,6 +235,7 @@
             ClientSize = new Size(623, 324);
             Controls.Add(tabControl1);
             Name = "Produtos";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Produtos";
             Load += Produtos_Load;
             tabControl1.ResumeLayout(false);

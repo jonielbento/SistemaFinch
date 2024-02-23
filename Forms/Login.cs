@@ -23,11 +23,11 @@ namespace SistemaFinch.Forms
         private void button1_Click(object sender, EventArgs e)
         {
             SistemaFinchBusines business = new("Data Source=JONIEL;Initial Catalog=JonielDb;Integrated Security=True;User Id=sa;TrustServerCertificate=true;");
-            var (success, user) = business.GetUsuario(textBox1.Text, textBox2.Text);
-            if (success)
+            var resultado = business.GetUsuario(textBox1.Text, textBox2.Text);
+            if (resultado.Success)
             {
-                MessageBox.Show($"{user} autenticado com sucesso");
-                Menu menu = new(user, business);
+                MessageBox.Show($"{resultado.Message} autenticado com sucesso");
+                Menu menu = new(resultado.Message, business);
                 Hide();
                 menu.Show();
             }

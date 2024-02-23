@@ -25,7 +25,7 @@ namespace SistemaFinch.Forms
 
         private void AtualizarGrid(string nome = null)
         {
-            listProduto = _business.GetProduto(nome);
+            (var resultado, listProduto) = _business.GetProduto(nome);
             if (listProduto is null) { dataGridView2.DataSource = null; }
             else { dataGridView2.DataSource = dataGridView2.DataSource = listProduto.Select(x => new { x.Id, x.Nome, x.Fornecedor, x.Quantidade }).ToList(); }
         }
@@ -36,17 +36,20 @@ namespace SistemaFinch.Forms
         {
             if (!fornecedorId.HasValue)
             {
-                MessageBox.Show("Erro");
+                MessageBox.Show("Produto já cadastrado");
+
             }
             else
             {
                 if (produtoId.HasValue)
                 {
                     _business.UpdateProduto(produtoId.Value, fornecedorId.Value, textBox2.Text, numericUpDown1.Value.ToString());
+                    MessageBox.Show("Produto atualizado");
                 }
                 else
                 {
                     _business.PostProduto(fornecedorId.Value, textBox2.Text, numericUpDown1.Value.ToString());
+                    MessageBox.Show("Produto cadastrado");
                 }
 
                 if (true)
@@ -119,7 +122,7 @@ namespace SistemaFinch.Forms
         public void PreencherComboBox()
         {
             comboBox1.DataSource = null;
-            listFornecedor = _business.GetFornecedor();
+           var (resultado, listFornecedor) = _business.GetFornecedor();
             comboBox1.DataSource = listFornecedor.Select(x => new { x.Id, x.Nome }).ToList();
             comboBox1.DisplayMember = "Nome";
             comboBox1.ValueMember = "Id";

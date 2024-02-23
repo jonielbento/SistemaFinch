@@ -18,9 +18,10 @@ namespace SistemaFinch.Forms
 
         private void AtualizarGrid(string nome = null)
         {
-            ListFornecedor = _business.GetFornecedor(nome);
-            if (ListFornecedor is null) { dataGridView2.DataSource = null; }
-            else { dataGridView2.DataSource = ListFornecedor.Select(x => new { Id = x.Id, Nome = x.Nome, CNPJ = x.CNPJ, Endereco = x.Endereco, Ativo = x.Ativo }).ToList(); }
+           (var resultado,ListFornecedor) = _business.GetFornecedor(nome);
+           // if (ListFornecedor is null) { dataGridView2.DataSource = null; }
+           if (!resultado.Success) { MessageBox.Show(resultado.Message); }
+            dataGridView2.DataSource = ListFornecedor?.Select(x => new { Id = x.Id, Nome = x.Nome, CNPJ = x.CNPJ, Endereco = x.Endereco, Ativo = x.Ativo }).ToList(); 
 
         }
 
@@ -74,16 +75,15 @@ namespace SistemaFinch.Forms
         {
             if (fornecedorId.HasValue)
             {
-                //id, nome, cep, estado, bairro, cidade, complemento, numero, rua, ativo
-
+                
                 _business.UpdateFornecedor(fornecedorId.Value, textBox2.Text, textBox10.Text, textBox8.Text, textBox6.Text, textBox7.Text, textBox9.Text, textBox5.Text, textBox4.Text, checkBox1.Checked);
+                MessageBox.Show("Fornecedor atualizado");
             }
             else
             {
-                //cnpj, nome, cep, estado, bairro--, cidade, complemento, numero, rua, ativo
-
+                
                 var resultado = _business.PostFornecedor(textBox3.Text, textBox2.Text, textBox10.Text, textBox8.Text, textBox6.Text, textBox7.Text, textBox9.Text, textBox5.Text, textBox4.Text, checkBox1.Checked);
-                MessageBox.Show(resultado.Message);
+                MessageBox.Show("Fornecedor cadastrado");
 
             }
 

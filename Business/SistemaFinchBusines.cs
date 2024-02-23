@@ -2,6 +2,7 @@
 using SistemaFinch.DataAccess;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Windows.Forms.VisualStyles;
 
 namespace SistemaFinch.Business
 {
@@ -12,10 +13,10 @@ namespace SistemaFinch.Business
 
         public Resultado GetUsuario(string usuario, string senha)
         {
-            if (string.IsNullOrWhiteSpace(usuario)) { return new(false, null); }
-            if (string.IsNullOrWhiteSpace(senha)) { return new(false, null); }
-            return _dataAccess.GetUsuario(usuario, senha);
-
+            if (string.IsNullOrWhiteSpace(usuario)) { return new(false, "Usuario ou senha incorreta"); }
+            if (string.IsNullOrWhiteSpace(senha)) { return new(false, "Usuario ou senha incorreta"); }
+            var (resultado, nome) = _dataAccess.GetUsuario(usuario, senha);
+            return new(resultado, nome);
         }
 
         public (Resultado, List<FornecedorDb>?) GetFornecedor(string nome = null)
@@ -23,9 +24,10 @@ namespace SistemaFinch.Business
             var resultado = _dataAccess.GetFornecedor(nome);
             if (resultado.Success && !string.IsNullOrWhiteSpace(resultado.Message))
             {
-                return JsonSerializer.Deserialize<List<FornecedorDb>>(resultado.Message);
+
+                return (new(true, null), JsonSerializer.Deserialize<List<FornecedorDb>>(resultado.Message));
             }
-            return (null, null);
+            return (new(false, "Não foi possivel consultar fornecedor"), null);
 
         }
 
@@ -34,23 +36,14 @@ namespace SistemaFinch.Business
             var resultado = _dataAccess.GetProduto(nome);
             if (resultado.Success && !string.IsNullOrWhiteSpace(resultado.Message))
             {
-                return JsonSerializer.Deserialize<List<ProdutoDb>>(resultado.Message);
+                return (new(true, null), JsonSerializer.Deserialize<List<ProdutoDb>>(resultado.Message));
             }
-            return null;
+            return (new(false, "Não foi possivel consultar Produto"), null);
 
         }
 
         public Resultado PostFornecedor(string cnpj, string nome, string cep, string estado, string bairro, string cidade, string complemento, string numero, string rua, bool ativo)
         {
-            if (string.IsNullOrWhiteSpace(nome)) { return new(false, "o nome não pode ser nulo"); }
-            if (string.IsNullOrWhiteSpace(cep) || cep.Length != 8 || !int.TryParse(cep, out _)) { return new(false, "CEP inválido"); }
-            if (string.IsNullOrWhiteSpace(estado)) { return new(false, ""); }
-            if (string.IsNullOrWhiteSpace(bairro)) { return new(false, ""); }
-            if (string.IsNullOrWhiteSpace(cidade)) { return new(false, ""); }
-            if (string.IsNullOrWhiteSpace(complemento)) { return new(false, ""); }
-            if (string.IsNullOrWhiteSpace(numero)) { return new(false, ""); }
-            if (string.IsNullOrWhiteSpace(rua)) { return new(false, ""); }
-
             if (!ValidarCnpj(cnpj))
             {
                 return new(false, "Cnpj invalido");
@@ -61,57 +54,51 @@ namespace SistemaFinch.Business
             {
                 return new(true, "Operação falhou");
             }
-            return new(true, "Operação executada com sucesso"); ;
+            return new(true, "Operação executada com sucesso"); 
         }
 
         public Resultado PostProduto(int fornecedorId, string nome, string quantidade)
         {
-            if (fornecedorId <= 0) { return false; }
-            if (string.IsNullOrWhiteSpace(nome)) { return false; }
-            if (!int.TryParse(quantidade, out var intQuantidade)) { return false; }
+            if (fornecedorId <= 0) { return new(false, "selecione um fornecedor"); }
+            if (string.IsNullOrWhiteSpace(nome)) { return new(false, "Nome não pode ser nulo"); }
+            if (!int.TryParse(quantidade, out var intQuantidade)) { return new(false, "Informe uma quantidade"); }
+
 
             var resultado = _dataAccess.PostProduto(fornecedorId, nome, intQuantidade);
 
-            return resultado;
+            return new(resultado, "Operação executada com sucesso");
         }
 
 
         public Resultado UpdateFornecedor(int id, string nome, string cep, string estado, string bairro, string cidade, string complemento, string numero, string rua, bool ativo)
         {
-            if (id <= 0) { return false; }
-            if (string.IsNullOrWhiteSpace(nome)) { return false; }
-            if (string.IsNullOrWhiteSpace(cep)) { return false; }
-            if (string.IsNullOrWhiteSpace(estado)) { return false; }
-            if (string.IsNullOrWhiteSpace(bairro)) { return false; }
-            if (string.IsNullOrWhiteSpace(cidade)) { return false; }
-            if (string.IsNullOrWhiteSpace(complemento)) { return false; }
-            if (string.IsNullOrWhiteSpace(numero)) { return false; }
-            if (string.IsNullOrWhiteSpace(rua)) { return false; }
-
+            if (id <= 0) { return new(false, "Fornecedor inexiste"); }
+            
             var resultado = _dataAccess.UpdateFornecedor(id, nome, cep, estado, bairro, cidade, complemento, numero, rua, ativo);
 
-            return resultado;
+            return new(resultado, "Fornecedor atualizado com sucesso");
         }
 
         public Resultado UpdateProduto(int id, int fornecedorid, string nome, string quantidade)
         {
-            if (id <= 0) { return false; }
-            if (fornecedorid <= 0) { return false; }
-            if (string.IsNullOrWhiteSpace(nome)) { return false; }
-            if (!int.TryParse(quantidade, out var intQuantidade)) { return false; }
+            if (id <= 0) { return new(false, "Produto inexiste"); }
+            if (fornecedorid <= 0) { return new(false, "Fornecedor inexiste"); }
+            if (string.IsNullOrWhiteSpace(nome)) { return new(false, "Não pode ser vazio"); }
+            if (!int.TryParse(quantidade, out var intQuantidade)) { return new(false, "Informe a quantidade"); }
 
             var resultado = _dataAccess.UpdateProduto(id, fornecedorid, nome, intQuantidade);
 
-            return resultado;
+            return new(resultado, "Update com sucesso");
         }
+    
 
         public Resultado DeleteFornecedor(string id)
         {
-            if (!int.TryParse(id, out int identify)) { return false; }
+            if (!int.TryParse(id, out int identify)) { return new(false, "Sem fornecedor"); }
 
             var resultado = _dataAccess.DeleteFornecedor(identify);
 
-            return resultado;
+            return new(resultado, "Deletado com sucesso");
         }
 
         public Resultado DeleteProduto(string id)
@@ -120,11 +107,11 @@ namespace SistemaFinch.Business
             {
                 if (int.TryParse(id, out int produtoId))
                 {
-                    return _dataAccess.DeleteProduto(produtoId);
+                    return new(_dataAccess.DeleteProduto(produtoId), "Deletado com sucesso");
                 }
             }
 
-            return false;
+            return new(false, "Sem produto");
 
         }
 

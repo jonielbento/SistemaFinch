@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SistemaFinch")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f9c4d326eb0bd494d8e3564bc806663559a7358")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62c5c96278e3e96989c5054a74df6b98e6e8aea7")]
 [assembly: System.Reflection.AssemblyProductAttribute("SistemaFinch")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SistemaFinch")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

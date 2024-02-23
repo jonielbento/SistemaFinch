@@ -42,7 +42,7 @@ namespace SistemaFinch.Business
 
         public Resultado PostFornecedor(string cnpj, string nome, string cep, string estado, string bairro, string cidade, string complemento, string numero, string rua, bool ativo)
         {
-            if (string.IsNullOrWhiteSpace(nome)) { return new(false, "o nome não pode ser nulo");  }
+            if (string.IsNullOrWhiteSpace(nome)) { return new(false, "o nome não pode ser nulo"); }
             if (string.IsNullOrWhiteSpace(cep) || cep.Length != 8 || !int.TryParse(cep, out _)) { return new(false, "CEP inválido"); }
             if (string.IsNullOrWhiteSpace(estado)) { return new(false, ""); }
             if (string.IsNullOrWhiteSpace(bairro)) { return new(false, ""); }
@@ -57,8 +57,8 @@ namespace SistemaFinch.Business
             }
 
             var resultado = _dataAccess.PostFornecedor(cnpj, nome, cep, estado, bairro, cidade, complemento, numero, rua, ativo);
-            if (!resultado) 
-            { 
+            if (!resultado)
+            {
                 return new(true, "Operação falhou");
             }
             return new(true, "Operação executada com sucesso"); ;
@@ -123,9 +123,9 @@ namespace SistemaFinch.Business
                     return _dataAccess.DeleteProduto(produtoId);
                 }
             }
-            
+
             return false;
-            
+
         }
 
         public async Task<Cep> GetCepAsync(string cep)
@@ -137,7 +137,7 @@ namespace SistemaFinch.Business
         private static bool ValidarCnpj(string cnpj)
         {
             string cnpjLimpo = MyRegex().Replace(cnpj, "");
-            
+
             if (cnpjLimpo.Length != 14)
             {
                 return false;

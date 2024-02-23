@@ -8,7 +8,7 @@ namespace SistemaFinch.Repository.Models
         {
         }
 
-        [Key]public int Id { get; set; }
+        [Key] public int Id { get; set; }
         public string Nome { get; set; }
         public string CEP { get; set; }
         public string CNPJ { get; set; }

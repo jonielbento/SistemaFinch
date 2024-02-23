@@ -19,9 +19,9 @@ namespace SistemaFinch.Forms
         private void AtualizarGrid(string nome = null)
         {
             ListFornecedor = _business.GetFornecedor(nome);
-            if(ListFornecedor is null) { dataGridView2.DataSource = null; }
+            if (ListFornecedor is null) { dataGridView2.DataSource = null; }
             else { dataGridView2.DataSource = ListFornecedor.Select(x => new { Id = x.Id, Nome = x.Nome, CNPJ = x.CNPJ, Endereco = x.Endereco, Ativo = x.Ativo }).ToList(); }
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)

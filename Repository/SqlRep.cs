@@ -1,9 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using SistemaFinch.Commons;
 using SistemaFinch.Repository.Models;
 using System.Data;
-using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -18,7 +16,7 @@ namespace SistemaFinch.Repository
         public bool DeleteFornecedor(int id)
         {
             var fornecedor = _context.Fornecedor.Find(id);
-            if(fornecedor is not null)
+            if (fornecedor is not null)
             {
                 fornecedor.Ativo = false;
                 fornecedor.UpdateDate = DateTime.Now.ToString();
@@ -125,7 +123,7 @@ namespace SistemaFinch.Repository
             try
             {
                 Produto addProduto = new();
-                
+
 
                 addProduto.Nome = nome;
                 addProduto.Quantidade = quantidade;

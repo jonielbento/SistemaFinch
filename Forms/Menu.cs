@@ -33,7 +33,7 @@ namespace SistemaFinch.Forms
             {
                 MdiParent = this
             };
-            
+
             formFornecedores.Show();
 
 
